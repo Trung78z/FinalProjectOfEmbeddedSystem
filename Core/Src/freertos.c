@@ -75,10 +75,10 @@ const osThreadAttr_t dac_play_attributes = {
   .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
-/* Definitions for dac_buttun */
-osThreadId_t dac_buttunHandle;
-const osThreadAttr_t dac_buttun_attributes = {
-  .name = "dac_buttun",
+/* Definitions for dac_button */
+osThreadId_t dac_buttonHandle;
+const osThreadAttr_t dac_button_attributes = {
+  .name = "dac_button",
   .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
@@ -144,8 +144,8 @@ void MX_FREERTOS_Init(void) {
   /* creation of dac_play */
   dac_playHandle = osThreadNew(DacPlayTask, NULL, &dac_play_attributes);
 
-  /* creation of dac_buttun */
-  dac_buttunHandle = osThreadNew(DacButtonPlay, NULL, &dac_buttun_attributes);
+  /* creation of dac_button */
+  dac_buttonHandle = osThreadNew(DacButtonPlay, NULL, &dac_button_attributes);
 
   /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
