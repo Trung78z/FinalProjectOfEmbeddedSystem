@@ -1,0 +1,8 @@
+../Core/Src/freertos.c:110:6:MX_FREERTOS_Init	8	static
+../Core/Src/freertos.c:167:6:HAL_GPIO_EXTI_Callback	16	static
+../Core/Src/freertos.c:188:6:StartDefaultTask	80	static
+../Core/Src/freertos.c:251:6:DacPlayTask	16	static
+../Core/Src/freertos.c:276:6:DacButtonPlay	16	static
+../Core/Src/freertos.c:299:6:initScreen	24	static
+../Core/Src/freertos.c:324:6:GenerateSineWave	24	static
+../Core/Src/freertos.c:331:6:GenerateSineWave2	24	static
