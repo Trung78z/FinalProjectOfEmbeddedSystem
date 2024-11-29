@@ -56,11 +56,11 @@ void MX_GPIO_Init(void)
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, LCD_RST_Pin|LCD_BL_Pin, GPIO_PIN_SET);
 
-  /*Configure GPIO pins : PAPin PAPin */
-  GPIO_InitStruct.Pin = BTN1_Pin|BTN2_Pin;
+  /*Configure GPIO pin : PtPin */
+  GPIO_InitStruct.Pin = BTN1_Pin;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING;
   GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+  HAL_GPIO_Init(BTN1_GPIO_Port, &GPIO_InitStruct);
 
   /*Configure GPIO pins : PBPin PBPin */
   GPIO_InitStruct.Pin = LED1_Pin|LED2_Pin;
@@ -87,9 +87,6 @@ void MX_GPIO_Init(void)
   /* EXTI interrupt init*/
   HAL_NVIC_SetPriority(EXTI0_IRQn, 5, 0);
   HAL_NVIC_EnableIRQ(EXTI0_IRQn);
-
-  HAL_NVIC_SetPriority(EXTI1_IRQn, 5, 0);
-  HAL_NVIC_EnableIRQ(EXTI1_IRQn);
 
   HAL_NVIC_SetPriority(EXTI4_IRQn, 15, 0);
   HAL_NVIC_EnableIRQ(EXTI4_IRQn);

@@ -64,32 +64,34 @@ volatile uint32_t sampleIndex = 0;
 /* Definitions for TouchPin */
 osThreadId_t TouchPinHandle;
 const osThreadAttr_t TouchPin_attributes = {
-	.name = "TouchPin",
-	.stack_size = 1024 * 4,
-	.priority = (osPriority_t)osPriorityNormal,
+  .name = "TouchPin",
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for dac_play */
 osThreadId_t dac_playHandle;
 const osThreadAttr_t dac_play_attributes = {
-	.name = "dac_play",
-	.stack_size = 1024 * 4,
-	.priority = (osPriority_t)osPriorityNormal,
+  .name = "dac_play",
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for dac_buttun */
 osThreadId_t dac_buttunHandle;
 const osThreadAttr_t dac_buttun_attributes = {
-	.name = "dac_buttun",
-	.stack_size = 1024 * 4,
-	.priority = (osPriority_t)osPriorityNormal,
+  .name = "dac_buttun",
+  .stack_size = 1024 * 4,
+  .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for buttonSemaphore */
 osSemaphoreId_t buttonSemaphoreHandle;
 const osSemaphoreAttr_t buttonSemaphore_attributes = {
-	.name = "buttonSemaphore"};
+  .name = "buttonSemaphore"
+};
 /* Definitions for dac */
 osSemaphoreId_t dacHandle;
 const osSemaphoreAttr_t dac_attributes = {
-	.name = "dac"};
+  .name = "dac"
+};
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN FunctionPrototypes */
@@ -103,56 +105,56 @@ void DacButtonPlay(void *argument);
 void MX_FREERTOS_Init(void); /* (MISRA C 2004 rule 8.1) */
 
 /**
- * @brief  FreeRTOS initialization
- * @param  None
- * @retval None
- */
-void MX_FREERTOS_Init(void)
-{
-	/* USER CODE BEGIN Init */
+  * @brief  FreeRTOS initialization
+  * @param  None
+  * @retval None
+  */
+void MX_FREERTOS_Init(void) {
+  /* USER CODE BEGIN Init */
 
-	/* USER CODE END Init */
+  /* USER CODE END Init */
 
-	/* USER CODE BEGIN RTOS_MUTEX */
+  /* USER CODE BEGIN RTOS_MUTEX */
 	/* add mutexes, ... */
-	/* USER CODE END RTOS_MUTEX */
+  /* USER CODE END RTOS_MUTEX */
 
-	/* Create the semaphores(s) */
-	/* creation of buttonSemaphore */
-	buttonSemaphoreHandle = osSemaphoreNew(1, 0, &buttonSemaphore_attributes);
+  /* Create the semaphores(s) */
+  /* creation of buttonSemaphore */
+  buttonSemaphoreHandle = osSemaphoreNew(1, 1, &buttonSemaphore_attributes);
 
-	/* creation of dac */
-	dacHandle = osSemaphoreNew(1, 0, &dac_attributes);
+  /* creation of dac */
+  dacHandle = osSemaphoreNew(1, 1, &dac_attributes);
 
-	/* USER CODE BEGIN RTOS_SEMAPHORES */
+  /* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */
-	/* USER CODE END RTOS_SEMAPHORES */
+  /* USER CODE END RTOS_SEMAPHORES */
 
-	/* USER CODE BEGIN RTOS_TIMERS */
+  /* USER CODE BEGIN RTOS_TIMERS */
 	/* start timers, add new ones, ... */
-	/* USER CODE END RTOS_TIMERS */
+  /* USER CODE END RTOS_TIMERS */
 
-	/* USER CODE BEGIN RTOS_QUEUES */
+  /* USER CODE BEGIN RTOS_QUEUES */
 	/* add queues, ... */
-	/* USER CODE END RTOS_QUEUES */
+  /* USER CODE END RTOS_QUEUES */
 
-	/* Create the thread(s) */
-	/* creation of TouchPin */
-	TouchPinHandle = osThreadNew(StartDefaultTask, NULL, &TouchPin_attributes);
+  /* Create the thread(s) */
+  /* creation of TouchPin */
+  TouchPinHandle = osThreadNew(StartDefaultTask, NULL, &TouchPin_attributes);
 
-	/* creation of dac_play */
-	dac_playHandle = osThreadNew(DacPlayTask, NULL, &dac_play_attributes);
+  /* creation of dac_play */
+  dac_playHandle = osThreadNew(DacPlayTask, NULL, &dac_play_attributes);
 
-	/* creation of dac_buttun */
-	dac_buttunHandle = osThreadNew(DacButtonPlay, NULL, &dac_buttun_attributes);
+  /* creation of dac_buttun */
+  dac_buttunHandle = osThreadNew(DacButtonPlay, NULL, &dac_buttun_attributes);
 
-	/* USER CODE BEGIN RTOS_THREADS */
+  /* USER CODE BEGIN RTOS_THREADS */
 	/* add threads, ... */
-	/* USER CODE END RTOS_THREADS */
+  /* USER CODE END RTOS_THREADS */
 
-	/* USER CODE BEGIN RTOS_EVENTS */
+  /* USER CODE BEGIN RTOS_EVENTS */
 	/* add events, ... */
-	/* USER CODE END RTOS_EVENTS */
+  /* USER CODE END RTOS_EVENTS */
+
 }
 
 /* USER CODE BEGIN Header_StartDefaultTask */
@@ -162,8 +164,6 @@ void MX_FREERTOS_Init(void)
  * @retval None
  */
 
-bool check = false;
-
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
 	osDelay(500);
@@ -172,22 +172,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 		osSemaphoreRelease(buttonSemaphoreHandle);
 		HAL_UART_Transmit(&huart2, (uint8_t *)"2\n\r", strlen("2\n\r"), 100);
 	}
-	if (GPIO_Pin == BTN1_Pin)
-	{
-		check = true;
-		osSemaphoreRelease(dacHandle);
-	}
 
-	else
-	{
-		check = false;
-	}
 }
 
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
-	/* USER CODE BEGIN StartDefaultTask */
+  /* USER CODE BEGIN StartDefaultTask */
 
 	initScreen();
 	/* Infinite loop */
@@ -238,7 +229,7 @@ void StartDefaultTask(void *argument)
 		}
 		osDelay(100);
 	}
-	/* USER CODE END StartDefaultTask */
+  /* USER CODE END StartDefaultTask */
 }
 
 /* USER CODE BEGIN Header_DacPlayTask */
@@ -250,7 +241,7 @@ void StartDefaultTask(void *argument)
 /* USER CODE END Header_DacPlayTask */
 void DacPlayTask(void *argument)
 {
-	/* USER CODE BEGIN DacPlayTask */
+  /* USER CODE BEGIN DacPlayTask */
 	HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
 	GenerateSineWave();
 	for (;;)
@@ -263,7 +254,7 @@ void DacPlayTask(void *argument)
 		sampleIndex++;
 		osDelay(1);
 	}
-	/* USER CODE END DacPlayTask */
+  /* USER CODE END DacPlayTask */
 }
 
 /* USER CODE BEGIN Header_DacButtonPlay */
@@ -275,7 +266,7 @@ void DacPlayTask(void *argument)
 /* USER CODE END Header_DacButtonPlay */
 void DacButtonPlay(void *argument)
 {
-	/* USER CODE BEGIN DacButtonPlay */
+  /* USER CODE BEGIN DacButtonPlay */
 	/* Infinite loop */
 	HAL_DAC_Start(&hdac, DAC_CHANNEL_2);
 	GenerateSineWave2();
@@ -291,7 +282,7 @@ void DacButtonPlay(void *argument)
 			osDelay(1);
 		}
 	}
-	/* USER CODE END DacButtonPlay */
+  /* USER CODE END DacButtonPlay */
 }
 
 /* Private application code --------------------------------------------------*/
@@ -337,3 +328,4 @@ void GenerateSineWave2()
 }
 
 /* USER CODE END Application */
+
